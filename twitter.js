@@ -116,9 +116,7 @@ const getLikes = async () => {
             }
             else {
                 if (count > 0) {
-                    Liked.deleteMany({}, (callback) => {
-                        
-                    })
+                    Liked.deleteMany({}, (callback) => { })
                 }   
                 Liked.bulkWrite(
                     likedArray.map((likedTweet) => {
@@ -197,9 +195,7 @@ const getRetweets = async () => {
             }
             else {
                 if (count > 0) {
-                    Retweets.deleteMany({}, (callback) => {
-
-                    })
+                    Retweets.deleteMany({}, (callback) => { })
                 }
     
                 Retweets.bulkWrite(
