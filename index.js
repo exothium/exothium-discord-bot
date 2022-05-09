@@ -53,7 +53,7 @@ client.on("interactionCreate", async (interaction) => {
             return
         }
         console.log(user.data)
-        setTimeout(() => {
+        setTimeout(async () => {
             await axios.get("http://localhost:5000/likes", {
                 userId: user.data.id
             }).then((res) => {
