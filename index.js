@@ -4,6 +4,7 @@ const Retweet = require("./Models/retweetModel")
 const connectDB = require("./assets/db")
 const { getUserbyUsername, getTweets, getLikes, getRetweets } = require('./twitter');
 const { default: axios } = require('axios');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
 
 
 
