@@ -43,7 +43,7 @@ client.on("interactionCreate", async (interaction) => {
             return
         }
 
-        axios.get("http://localhost:5000/likes", {
+        await axios.get("http://localhost:5000/likes", {
             userId: user.data.id
         }).then((res) => {
             console.log(res.data)
