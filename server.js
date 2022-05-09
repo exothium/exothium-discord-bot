@@ -20,10 +20,10 @@ const likesCounter = new promClient.Counter({
 
 
 
-app.get("/likes", (req, res) => {
+app.get("/likes", async (req, res) => {
     const userId = req.body.userId
 
-    Liked.countDocuments({ user_id: userId }, (err, count) => {
+    await Liked.countDocuments({ user_id: userId }, (err, count) => {
         if (err) {
             console.log(err)
         }
