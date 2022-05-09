@@ -22,15 +22,16 @@ const likesCounter = new promClient.Counter({
 
 app.get("/likes", async (req, res) => {
     const userId = req.body.userId
-
+    
     Liked.countDocuments({ user_id: userId }, (err, count) => {
         if (err) {
             console.log(err)
         }
         else {
-            console.log("--- Request: ---")
+            console.log("--- Request Body: ---")
             console.log(req.body)
             console.log(`Counts: ${count}`);
+            
             // Increase Prometheus counter
             likesCounter.inc()
             res.json({ likes: count })
