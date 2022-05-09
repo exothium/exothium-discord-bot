@@ -5,7 +5,17 @@ const connectDB = require("./assets/db")
 const { getUserbyUsername, getTweets, getLikes, getRetweets } = require('./twitter');
 const { default: axios } = require('axios');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+const { TwitterApi } = require('twitter-api-v2');
+const { TwitterApiRateLimitPlugin } = require('@twitter-api-v2/plugin-rate-limit') 
 
+// Constant variables
+const twitter_account_id = process.env.TWITTER_ACCOUNT_ID
+const twitter_bearer_token = process.env.TWITTER_BEARER_TOKEN
+
+
+const rateLimitPlugin = new TwitterApiRateLimitPlugin()
+const appOnlyClient = new TwitterApi(twitter_bearer_token, { plugins: [rateLimitPlugin]});
+const twitterClient = appOnlyClient.v2;
 
 
 client.on("messageCreate", async (message) => {
@@ -36,7 +46,7 @@ client.on("interactionCreate", async (interaction) => {
     if (commandName === "likes") {
         const username = options.get("username").value
 
-        const user = await getUserbyUsername(username)
+        const user = await twitterClient.userByUsername(username)
 
         if (!user) {
             interaction.reply('User does not exist')
@@ -44,7 +54,7 @@ client.on("interactionCreate", async (interaction) => {
         }
 
         await axios.get("http://localhost:5000/likes", {
-            userId: user.id
+            userId: user.data.id
         }).then((res) => {
             console.log(res.data)
             if (res.data.likes > 0) {
