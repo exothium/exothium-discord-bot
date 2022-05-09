@@ -43,17 +43,17 @@ client.on("interactionCreate", async (interaction) => {
             return
         }
 
-       axios.get("http://localhost:5000/likes", {
-           userId: user.data.id
-       }).then((res) => {
-           console.log(res.data)
-           if (res.data.likes > 0) {
-               interaction.reply(`User ${username} liked ${res.data.likes} tweets`)
-           }
-           else {
-               interaction.reply(`User hasn't liked any tweet yet`)
-           }
-       })     
+        axios.get("http://localhost:5000/likes", {
+            userId: user.data.id
+        }).then((res) => {
+            console.log(res.data)
+            if (res.data.likes > 0) {
+                interaction.reply(`User ${username} liked ${res.data.likes} tweets`)
+            }
+            else {
+                interaction.reply(`User hasn't liked any tweet yet`)
+            }
+        })
     }
 
     else if (commandName === "retweets") {
@@ -73,7 +73,7 @@ client.on("interactionCreate", async (interaction) => {
             else {
                 interaction.reply(`User @${username} retweeted ${count} times on Exothium`)
             }
-        })   
+        })
     }
 })
 
@@ -101,19 +101,19 @@ client.on("ready", () => {
         ]
     })
     commands.create(
-    {
-        name: 'retweets',
-        description: 'Checks how many times a user retweeted on Exothium\'s Twitter page',
-        options: [
-            {
-                name: 'username',
-                description: 'User\'s @ on Twitter',
-                required: true,
-                type: 3
-            }
-        ]
-    })
-  
+        {
+            name: 'retweets',
+            description: 'Checks how many times a user retweeted on Exothium\'s Twitter page',
+            options: [
+                {
+                    name: 'username',
+                    description: 'User\'s @ on Twitter',
+                    required: true,
+                    type: 3
+                }
+            ]
+        })
+
     console.log('Bot is ready')
 })
 
