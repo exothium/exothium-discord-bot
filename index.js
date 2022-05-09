@@ -53,16 +53,13 @@ client.on("interactionCreate", async (interaction) => {
             return
         }
         console.log(user.id)
-        
-        await axios.get("http://localhost:5000/likes", {
-            userId: "1119939433464238081" 
-        }).then((res) => {
-            console.log(res.data)
+
+        await axios.get(`http://localhost:5000/likes/${user.id}`).then((res) => {
             if (res.data.likes > 0) {
-                interaction.reply(`User ${username} liked ${res.data.likes} tweets`)
+                interaction.reply(`User @${username} liked ${res.data.likes} tweets.`)
             }
             else {
-                interaction.reply(`User hasn't liked any tweet yet`)
+                interaction.reply(`User @${username} hasn't liked any tweet yet.`)
             }
         })
         
