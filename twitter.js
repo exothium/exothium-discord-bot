@@ -221,7 +221,10 @@ const getRetweets = async () => {
 
 
 const getUserbyUsername = async (username) => {
-    await client.userByUsername(username).then((userRes) => { return userRes })
+    let user
+    await client.userByUsername(username).then((userRes) => user = userRes)
+
+    return user
 }
 
 function sleep(time) {
