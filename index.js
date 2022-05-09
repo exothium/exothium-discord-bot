@@ -53,18 +53,20 @@ client.on("interactionCreate", async (interaction) => {
             return
         }
         console.log(user.data)
+        setInterval(() => {
+            await axios.get("http://localhost:5000/likes", {
+                userId: user.data.id
+            }).then((res) => {
+                console.log(res.data)
+                if (res.data.likes > 0) {
+                    interaction.reply(`User ${username} liked ${res.data.likes} tweets`)
+                }
+                else {
+                    interaction.reply(`User hasn't liked any tweet yet`)
+                }
+            })
+        }, 500)
         
-        await axios.get("http://localhost:5000/likes", {
-            userId: user.data.id
-        }).then((res) => {
-            console.log(res.data)
-            if (res.data.likes > 0) {
-                interaction.reply(`User ${username} liked ${res.data.likes} tweets`)
-            }
-            else {
-                interaction.reply(`User hasn't liked any tweet yet`)
-            }
-        })
     }
 
     else if (commandName === "retweets") {
