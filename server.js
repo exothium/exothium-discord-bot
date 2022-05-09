@@ -3,7 +3,7 @@ const promClient = require("prom-client");
 const connectDB = require("./assets/db");
 const Liked = require("./Models/liked_tweetsModel");
 const app = express()
-
+require("dotenv").config()
 app.use(express.json())
 // Create database connection
 connectDB()
