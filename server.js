@@ -28,6 +28,9 @@ app.get("/likes", async (req, res) => {
             console.log(err)
         }
         else {
+            console.log("--- Request: ---")
+            console.log(req.body)
+            console.log(`Counts: ${count}`);
             // Increase Prometheus counter
             likesCounter.inc()
             res.json({ likes: count })
