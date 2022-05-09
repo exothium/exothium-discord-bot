@@ -1,13 +1,11 @@
 const { Intents, Client } = require('discord.js');
 const dotenv = require("dotenv").config()
-const Liked = require("./Models/liked_tweetsModel");
 const Retweet = require("./Models/retweetModel")
 const connectDB = require("./assets/db")
 const { getUserbyUsername, getTweets, getLikes, getRetweets } = require('./twitter');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+const { default: axios } = require('axios');
 
-// Creating a database connection
-connectDB()
+
 
 client.on("messageCreate", async (message) => {
     if (message.content === "!getTweets" && message.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
@@ -44,14 +42,16 @@ client.on("interactionCreate", async (interaction) => {
             return
         }
 
-        Liked.countDocuments({ user_id: user.data.id }, (err, count) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                interaction.reply(`User @${username} liked ${count} tweets on Exothium`)
-            }
-        })      
+       axios.get("/likes", {
+           userId: user.data.id
+       }).then((res) => {
+           if (res.data.likes > 0) {
+               interaction.reply(`User ${username} liked ${res.data.likes} tweets`)
+           }
+           else {
+               interaction.reply(`User hasn't liked any tweet yet`)
+           }
+       })     
     }
 
     else if (commandName === "retweets") {
