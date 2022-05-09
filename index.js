@@ -52,7 +52,8 @@ client.on("interactionCreate", async (interaction) => {
             interaction.reply('User does not exist')
             return
         }
-
+        console.log(user.data)
+        
         await axios.get("http://localhost:5000/likes", {
             userId: user.data.id
         }).then((res) => {
