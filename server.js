@@ -234,10 +234,9 @@ app.post("/retweets", async (req, res) => {
 
     // Get ONLY the tweets from this user that have been retweeted
     const retweets = await Tweets.find({ retweet_count: { $gte: 1 }, text: { $regex: "^(?!RT)" } })
-
     if (retweets.length > 0) {
 
-        let retweets = []
+        let tweets = []
         for (const tweet of retweets) {
             try {
                 const usersPaginated = await client.tweetRetweetedBy(tweet.tweet_id, { asPaginator: true, "max_results": 100 })
@@ -245,7 +244,7 @@ app.post("/retweets", async (req, res) => {
                 for await (const user of usersPaginated) {
                     console.log(user)
                     const obj = { tweet_id: tweet.tweet_id, user_id: user.id }
-                    retweets.push(obj)
+                    tweets.push(obj)
                 }
 
             } catch (error) {
@@ -266,7 +265,7 @@ app.post("/retweets", async (req, res) => {
                     // console.log(`--- Tweet ${tweet.tweet_id} ---\nRemaining Requests: ${usersPaginated.rateLimit.remaining}`)
                     for await (const user of usersPaginated) {
                         const obj = { tweet_id: tweet.tweet_id, user_id: user.id }
-                        retweets.push(obj)
+                        tweets.push(obj)
                     }
                 }
                 else {
@@ -288,7 +287,7 @@ app.post("/retweets", async (req, res) => {
                 }
 
                 Retweets.bulkWrite(
-                    retweets.map((retweet) => {
+                    tweets.map((retweet) => {
                         return ({
                             updateOne: {
                                 filter: { tweet_id: retweet.tweet_id, user_id: retweet.user_id },
