@@ -36,22 +36,22 @@ const likesCounter = new promClient.Counter({
 
 const retweetsCounter = new promClient.Counter({
     name: "node_request_twitter_retweets_total",
-    help: "The total number of requests from the \"/relikes\" command "
+    help: "The total number of requests from the \"/retweets\" command"
 })
 
 const getTweetsCounter = new promClient.Counter({
     name: "node_request_twitter_getTweets_total",
-    help: "The total number of requests from the \"!getTweets\" command "
+    help: "The total number of requests from the \"!getTweets\" command"
 })
 
 const getLikesCounter = new promClient.Counter({
     name: "node_request_twitter_getLikes_total",
-    help: "The total number of requests from the \"!getLikes\" command "
+    help: "The total number of requests from the \"!getLikes\" command"
 })
 
 const getRetweetsCounter = new promClient.Counter({
     name: "node_request_twitter_getRetweets_total",
-    help: "The total number of requests from the \"!getRetweets\" command "
+    help: "The total number of requests from the \"!getRetweets\" command"
 })
 
 
