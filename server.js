@@ -154,7 +154,6 @@ app.post("/likes", async (req, res) => {
     // Get the tweets that have at least 1 like from the DB and it's also not a retweeted tweet at the same time
     const likedTweets = await Tweets.find({ like_count: { $gte: 1 }, text: { $regex: "^(?!RT)" } })
 
-
     // If there are liked tweets
     if (likedTweets.length > 0) {
 
