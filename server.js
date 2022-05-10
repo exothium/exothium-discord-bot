@@ -60,7 +60,7 @@ app.get("/likes/:username", async (req, res) => {
     likesCounter.inc()
 
     const { username } = req.params
-    const user = await client.userByUsername(username)
+    const user = await client.userByUsername(username).then((user) => { return user.data })
 
     if (!user) {
         res.json({ message: "User does not exist "})
@@ -83,7 +83,7 @@ app.get("/retweets/:username", async (req, res) => {
 
     const { username } = req.params
 
-    const user = await client.userByUsername(username)
+    const user = await client.userByUsername(username).then((user) => { return user.data })
 
     if (!user) {
         res.json({ message: "User does not exist "})
@@ -233,7 +233,7 @@ app.post("/retweets", async (req, res) => {
     getRetweetsCounter.inc()
 
     // Get ONLY the tweets from this user that have been retweeted
-    const retweets = await Tweets.find({ like_count: { $gte: 1 }, text: { $regex: "^(?!RT)" } })
+    const retweets = await Tweets.find({ retweet_count: { $gte: 1 }, text: { $regex: "^(?!RT)" } })
 
     if (retweets.length > 0) {
 

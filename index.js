@@ -1,7 +1,7 @@
+const dotenv = require("dotenv").config()
 const { Intents, Client } = require('discord.js');
 const { default: axios } = require('axios');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
-axios.defaults.timeout = 15000
 
 client.on("messageCreate", async (message) => {
     if (message.content === "!getTweets" && message.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
