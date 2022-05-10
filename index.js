@@ -44,20 +44,8 @@ client.on("interactionCreate", async (interaction) => {
     else if (commandName === "retweets") {
         const username = options.get("username").value
 
-        const user = await getUserbyUsername(username)
-
-        if (!user) {
-            interaction.reply('User does not exist')
-            return
-        }
-
-        Retweet.countDocuments({ user_id: user.data.id }, (err, count) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                interaction.reply(`User @${username} retweeted ${count} times on Exothium`)
-            }
+        await axios.get(`http://localhost:5000/likes/${username}`).then((res) => {
+            interaction.reply(res.data.message)
         })
     }
 })
