@@ -1,39 +1,27 @@
 const { Intents, Client } = require('discord.js');
-const dotenv = require("dotenv").config()
-const Retweet = require("./Models/retweetModel")
-const connectDB = require("./assets/db")
-const { getUserbyUsername, getTweets, getLikes, getRetweets } = require('./twitter');
 const { default: axios } = require('axios');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
-const { TwitterApi } = require('twitter-api-v2');
-const { TwitterApiRateLimitPlugin } = require('@twitter-api-v2/plugin-rate-limit')
-
-// Constant variables
-const twitter_account_id = process.env.TWITTER_ACCOUNT_ID
-const twitter_bearer_token = process.env.TWITTER_BEARER_TOKEN
-
-
-const rateLimitPlugin = new TwitterApiRateLimitPlugin()
-const appOnlyClient = new TwitterApi(twitter_bearer_token, { plugins: [rateLimitPlugin] });
-const twitterClient = appOnlyClient.v2;
-
-connectDB()
+axios.defaults.timeout = 15000
 
 client.on("messageCreate", async (message) => {
     if (message.content === "!getTweets" && message.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
         message.channel.send("Adding...")
-        await getTweets()
-        message.reply("Tweets added into the Database")
+        await axios.post("http://localhost:5000/tweets").then((res) => {
+            message.reply(res.data.message)
+        })
+        
     }
     else if (message.content === "!getLikes" && message.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
-        await getLikes()
         message.channel.send("Adding...")
-        message.reply("Likes added into the Database")
+        await axios.post("http://localhost:5000/likes").then((res) => {
+            message.reply(res.data.message)
+        })
     }
     else if (message.content === "!getRetweets" && message.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
-        await getRetweets()
         message.channel.send("Adding...")
-        message.reply("Retweets added into the Database")
+        await axios.post("http://localhost:5000/retweets").then((res) => {
+            message.reply(res.data.message)
+        })
     }
 })
 
@@ -47,20 +35,8 @@ client.on("interactionCreate", async (interaction) => {
     if (commandName === "likes") {
         const username = options.get("username").value
 
-        const user = await twitterClient.userByUsername(username).then((res) => { return res.data })
-
-        if (!user) {
-            interaction.reply('User does not exist')
-            return
-        }
-
-        await axios.get(`http://localhost:5000/likes/${user.id}`).then((res) => {
-            if (res.data.likes > 0) {
-                interaction.reply(`User @${username} liked ${res.data.likes} tweets.`)
-            }
-            else {
-                interaction.reply(`User @${username} hasn't liked any tweet yet.`)
-            }
+        await axios.get(`http://localhost:5000/likes/${username}`).then((res) => {
+            interaction.reply(res.data.message)
         })
         
     }
