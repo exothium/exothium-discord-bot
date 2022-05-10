@@ -17,6 +17,7 @@ const rateLimitPlugin = new TwitterApiRateLimitPlugin()
 const appOnlyClient = new TwitterApi(twitter_bearer_token, { plugins: [rateLimitPlugin] });
 const twitterClient = appOnlyClient.v2;
 
+connectDB()
 
 client.on("messageCreate", async (message) => {
     if (message.content === "!getTweets" && message.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
