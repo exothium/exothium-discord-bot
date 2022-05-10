@@ -43,8 +43,7 @@ client.on("interactionCreate", async (interaction) => {
 
     else if (commandName === "retweets") {
         const username = options.get("username").value
-
-        await axios.get(`http://localhost:5000/likes/${username}`).then((res) => {
+        await axios.get(`http://localhost:5000/retweets/${username}`).then((res) => {
             interaction.reply(res.data.message)
         })
     }
