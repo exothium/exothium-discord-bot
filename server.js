@@ -67,7 +67,7 @@ app.get("/likes/:username", async (req, res) => {
         return
     }
     
-    Liked.countDocuments({ user_id: user.data.id }, (err, count) => {
+    Liked.countDocuments({ user_id: user.id }, (err, count) => {
         if (err) {
             console.log(err)
         }
@@ -89,7 +89,7 @@ app.get("/retweets/:username", async (req, res) => {
         res.json({ message: "User does not exist "})
         return
     }
-    Retweets.countDocuments({ user_id: user.data.id }, (err, count) => {
+    Retweets.countDocuments({ user_id: user.id }, (err, count) => {
         if (err) {
             console.log(err)
         }
