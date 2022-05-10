@@ -60,7 +60,6 @@ app.get("/likes/:username", async (req, res) => {
     likesCounter.inc()
 
     const { username } = req.params
-
     const user = await client.userByUsername(username)
 
     if (!user) {
