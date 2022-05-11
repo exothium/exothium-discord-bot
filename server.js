@@ -54,12 +54,12 @@ const getRetweetsCounter = new promClient.Counter({
     help: "The total number of requests from the \"!getRetweets\" command"
 })
 
-const followersCounter = new promClient.Counter({
+const followersCounter = new promClient.Gauge({
     name: "node_request_twitter_followers_total",
     help: "The total number of followers on Twitter"
 })
 
-const discordUsers = new promClient.Counter({
+const discordUsers = new promClient.Gauge({
     name: "node_request_discord_users_total",
     help: "The total number of users on Discord server"
 })
@@ -67,8 +67,7 @@ const discordUsers = new promClient.Counter({
 
 app.post("/discord-users", (req, res) => {
     const { totalUsers } = req.body
-    discordUsers.reset()
-    discordUsers.inc(totalUsers)
+    discordUsers.set(totalUsers)
     res.json({ message: `This discord server has ${totalUsers} members!`})
 })
 
@@ -80,8 +79,7 @@ app.get("/followers", async (req, res) => {
         res.json({ message: "User does not exist "})
         return
     }
-    followersCounter.reset()
-    followersCounter.inc(user.public_metrics.followers_count)
+    followersCounter.set(user.public_metrics.followers_count)
     res.json({ message: `@${user.username} has ${user.public_metrics.followers_count} followers on Twitter` })
 })
 
