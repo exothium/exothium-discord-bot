@@ -53,6 +53,12 @@ client.on("interactionCreate", async (interaction) => {
             interaction.reply(res.data.message)
         })
     }
+
+    else if (commandName === "discord_users") {
+        await axios.post("http://localhost:5000/discord-users", {
+            totalUsers: interaction.guild.memberCount
+        }).then((res) => interaction.reply(res.data.message))
+    }
 })
 
 
@@ -92,7 +98,11 @@ client.on("ready", () => {
     })
     commands.create({
         name: 'followers',
-        description: 'Checks how many people are following Exothium\'s Twitter page',
+        description: 'Checks how many people are following Exothium\'s Twitter page'
+    })
+    commands.create({
+        name: 'discord_users',
+        description: 'Checks how many people are in this Discord server'
     })
 
     console.log('Bot is ready')

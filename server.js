@@ -59,9 +59,21 @@ const followersCounter = new promClient.Counter({
     help: "The total number of followers on Twitter"
 })
 
+const discordUsers = new promClient.Counter({
+    name: "node_request_discord_users_total",
+    help: "The total number of users on Discord server"
+})
+
+
+app.post("/discord-users", (req, res) => {
+    const { totalUsers } = req.body
+    discordUsers.inc(totalUsers)
+    res.json({ message: `This discord server has ${totalUsers} members!`})
+})
+
 
 app.get("/followers", async (req, res) => {
-    const user = await client.user(twitter_account_id).then((user) => { return user.data })
+    const user = await client.user(twitter_account_id, { "user.fields" : "public_metrics" }).then((user) => { return user.data })
 
     if (!user) {
         res.json({ message: "User does not exist "})
