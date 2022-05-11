@@ -202,12 +202,8 @@ app.post("/likes", async (req, res) => {
                 // Retry again the last request
                 console.log("__ERROR__")
                 if (error.rateLimitError && error.rateLimit) {
-                    console.log(`You just hit the rate limit! Limit for this endpoint is ${error.rateLimit.limit} requests!`);
 
-                    const resetTimeout = error.rateLimit.reset * 1000; // convert to ms time instead of seconds time
-                    const timeToWait = resetTimeout - Date.now();
-                    console.log("Waiting 16 minutes " + timeToWait)
-
+                    res.write({ message: "Twitter timeout... I'll be sleeping for 16mins and return to work." })
                     await sleep(960000)
 
                     const usersPaginated = await client.tweetLikedBy(tweet.tweet_id, { asPaginator: true, "max_results": 100 })
@@ -281,12 +277,8 @@ app.post("/retweets", async (req, res) => {
                 // Retry again the last request
                 console.log("__ERROR__")
                 if (error.rateLimitError && error.rateLimit) {
-                    console.log(`You just hit the rate limit! Limit for this endpoint is ${error.rateLimit.limit} requests!`);
 
-                    const resetTimeout = error.rateLimit.reset * 1000; // convert to ms time instead of seconds time
-                    const timeToWait = resetTimeout - Date.now();
-                    console.log("Waiting 16 minutes " + timeToWait)
-
+                    res.write({ message: "Twitter timeout... I'll be sleeping for 16mins and return to work." })
                     await sleep(960000)
 
                     const usersPaginated = await client.tweetLikedBy(tweet.tweet_id, { asPaginator: true, "max_results": 100 })
