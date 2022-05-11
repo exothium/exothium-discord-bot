@@ -54,6 +54,23 @@ const getRetweetsCounter = new promClient.Counter({
     help: "The total number of requests from the \"!getRetweets\" command"
 })
 
+const followersCounter = new promClient.Counter({
+    name: "node_request_twitter_followers_total",
+    help: "The total number of followers on Twitter"
+})
+
+
+app.get("/followers", async (req, res) => {
+    const user = await client.user(twitter_account_id).then((user) => { return user.data })
+
+    if (!user) {
+        res.json({ message: "User does not exist "})
+        return
+    }
+    followersCounter.inc(user.public_metrics.followers_count)
+    res.json({ message: `@${user.username} has ${user.public_metrics.followers_count} followers on Twitter` })
+})
+
 
 app.get("/likes/:username", async (req, res) => {
     // Increase Prometheus counter
