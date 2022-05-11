@@ -203,7 +203,7 @@ app.post("/likes", async (req, res) => {
                 console.log("__ERROR__")
                 if (error.rateLimitError && error.rateLimit) {
 
-                    res.write({ message: "Twitter timeout... I'll be sleeping for 16mins and return to work." })
+                    res.write("{ message: \"Twitter timeout... I'll be sleeping for 16mins and return to work.\" }")
                     await sleep(960000)
 
                     const usersPaginated = await client.tweetLikedBy(tweet.tweet_id, { asPaginator: true, "max_results": 100 })
@@ -278,7 +278,7 @@ app.post("/retweets", async (req, res) => {
                 console.log("__ERROR__")
                 if (error.rateLimitError && error.rateLimit) {
 
-                    res.write({ message: "Twitter timeout... I'll be sleeping for 16mins and return to work." })
+                    res.write("{ message: \"Twitter timeout... I'll be sleeping for 16mins and return to work.\" }")
                     await sleep(960000)
 
                     const usersPaginated = await client.tweetLikedBy(tweet.tweet_id, { asPaginator: true, "max_results": 100 })
