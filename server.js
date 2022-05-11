@@ -67,6 +67,7 @@ const discordUsers = new promClient.Counter({
 
 app.post("/discord-users", (req, res) => {
     const { totalUsers } = req.body
+    discordUsers.reset()
     discordUsers.inc(totalUsers)
     res.json({ message: `This discord server has ${totalUsers} members!`})
 })
@@ -79,6 +80,7 @@ app.get("/followers", async (req, res) => {
         res.json({ message: "User does not exist "})
         return
     }
+    followersCounter.reset()
     followersCounter.inc(user.public_metrics.followers_count)
     res.json({ message: `@${user.username} has ${user.public_metrics.followers_count} followers on Twitter` })
 })
